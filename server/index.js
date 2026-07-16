@@ -12,21 +12,7 @@ dotenv.config();
 const app = express();
 
 // Connect to MongoDB
-import mongoose from "mongoose";
-
-console.log("URI:", process.env.MONGO_URI);
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Connected!");
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
-
+connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
