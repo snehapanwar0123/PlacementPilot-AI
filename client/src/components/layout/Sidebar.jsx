@@ -1,10 +1,12 @@
 import {
   LayoutDashboard,
   FileText,
+  
   Code2,
   Building2,
+  BrainCircuit,
+  BookOpen,
   Calendar,
-  Bot,
   Settings,
   LogOut,
 } from "lucide-react";
@@ -22,18 +24,52 @@ export default function Sidebar() {
   };
 
   const menu = [
-    { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-    { name: "Resume Analyzer", icon: FileText, path: "/resume" },
-    { name: "DSA Tracker", icon: Code2, path: "/dsa" },
-    { name: "Company Tracker", icon: Building2, path: "/companies" },
-    { name: "Calendar", icon: Calendar, path: "/calendar" },
-    { name: "AI Coach", icon: Bot, path: "/coach" },
-    { name: "Settings", icon: Settings, path: "/settings" },
+    {
+      name: "Dashboard",
+      icon: LayoutDashboard,
+      path: "/dashboard",
+    },
+    {
+      name: "Resume Analyzer",
+      icon: FileText,
+      path: "/resume",
+    },
+    
+    {
+      name: "Coding Arena",
+      icon: Code2,
+      path: "/coding-arena",
+    },
+    {
+      name: "Company Tracker",
+      icon: Building2,
+      path: "/company-tracker",
+    },
+    {
+      name: "Roadmap",
+      icon: BrainCircuit,
+      path: "/roadmap",
+    },
+    {
+      name: "Smart Notes",
+      icon: BookOpen,
+      path: "/smart-notes",
+    },
+    {
+      name: "Calendar",
+      icon: Calendar,
+      path: "/calendar",
+    },
+    {
+      name: "Settings",
+      icon: Settings,
+      path: "/settings",
+    },
   ];
 
   return (
     <aside className="flex h-[calc(100vh-64px)] w-64 flex-col border-r border-slate-800 bg-slate-900">
-      <div className="flex-1 p-4">
+      <div className="flex-1 overflow-y-auto p-4">
         {menu.map((item) => {
           const Icon = item.icon;
 
@@ -50,7 +86,7 @@ export default function Sidebar() {
               }
             >
               <Icon size={20} />
-              {item.name}
+              <span>{item.name}</span>
             </NavLink>
           );
         })}

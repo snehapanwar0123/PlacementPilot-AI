@@ -11,6 +11,9 @@ import companyRoutes from "./routes/companyRoutes.js";
 import roadmapRoutes from "./routes/roadmapRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import codingArenaRoutes from "./routes/codingArenaRoutes.js";
+import calendarRoutes from "./routes/calendarRoutes.js";
+import settingsRoutes from "./routes/settingsRoutes.js";
+
 
 // Import database connection (we'll create this next)
 import connectDB from "./config/db.js";
@@ -37,6 +40,8 @@ app.use("/api/companies", companyRoutes);
 app.use("/api/roadmap", roadmapRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/coding", codingArenaRoutes);
+app.use("/api/calendar", calendarRoutes);
+app.use("/api/settings", settingsRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

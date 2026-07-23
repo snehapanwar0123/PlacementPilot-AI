@@ -9,6 +9,8 @@ import MockInterview from "../pages/MockInterview";
 import CompanyTracker from "../pages/CompanyTracker";
 import Roadmap from "../pages/Roadmap";
 import CodingArena from "../pages/CodingArena";
+import Calendar from "../pages/Calendar";
+import Settings from "../pages/Settings";
 
 export default function AppRoutes() {
   return (
@@ -56,6 +58,8 @@ export default function AppRoutes() {
           <CodingArena />
         } 
           />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/settings" element={<Settings />} />
 
     </Routes>
   );
