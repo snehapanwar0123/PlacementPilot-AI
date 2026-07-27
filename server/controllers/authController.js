@@ -77,10 +77,16 @@ export const loginUser = async (req, res) => {
 
     // Check user exists
     if (!user) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
-    }
+  return res.status(401).json({
+    message: "Invalid email or password",
+  });
+}
+
+if (user.authProvider === "google") {
+  return res.status(400).json({
+    message: "This account uses Google Sign-In.",
+  });
+}
 
     // Compare password
     const isMatch = await bcrypt.compare(
@@ -135,6 +141,11 @@ export const changePassword = async (req, res) => {
     }
 
     const user = await User.findById(req.user._id);
+    if (user.authProvider === "google") {
+  return res.status(400).json({
+    message: "Google accounts cannot change password here.",
+  });
+}
 
     const isMatch = await bcrypt.compare(
       currentPassword,

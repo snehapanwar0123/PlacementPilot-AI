@@ -45,11 +45,7 @@ export default function Sidebar() {
       icon: Building2,
       path: "/company-tracker",
     },
-    {
-      name: "Roadmap",
-      icon: BrainCircuit,
-      path: "/roadmap",
-    },
+    
     {
       name: "Knowledge Hub",
       icon: BookOpen,

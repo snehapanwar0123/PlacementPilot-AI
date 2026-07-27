@@ -14,10 +14,16 @@ import Settings from "../pages/Settings";
 import PlanningZone from "../pages/PlanningZone";
 import KnowledgeHub from "../pages/KnowledgeHub";
 import KnowledgeDetails from "../pages/KnowledgeDetails";
+import GoogleSuccess from "../pages/GoogleSuccess";
+
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route
+    path="/auth/google/success"
+    element={<GoogleSuccess />}
+/>
 
       <Route path="/register" element={<Register />} />
 

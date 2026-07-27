@@ -14,7 +14,10 @@ import noteRoutes from "./routes/noteRoutes.js";
 import codingArenaRoutes from "./routes/codingArenaRoutes.js";
 import calendarRoutes from "./routes/calendarRoutes.js";
 import settingsRoutes from "./routes/settingsRoutes.js";
-
+import passport from "passport";
+import session from "express-session";
+import "./config/passport.js";
+import googleAuthRoutes from "./routes/googleAuth.js";
 
 // Import database connection (we'll create this next)
 import connectDB from "./config/db.js";
@@ -31,6 +34,16 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: process.env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
@@ -44,6 +57,7 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/coding", codingArenaRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/auth", googleAuthRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

@@ -89,6 +89,22 @@ export default function Login() {
             {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
+        <div className="mt-4">
+  <button
+    type="button"
+    onClick={() => {
+      window.location.href = "http://localhost:5000/api/auth/google";
+    }}
+    className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-50 transition"
+  >
+    <img
+      src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+      alt="Google"
+      className="w-5 h-5"
+    />
+    Continue with Google
+  </button>
+</div>
 
         <p className="mt-6 text-center text-gray-400">
           Don't have an account?{" "}
