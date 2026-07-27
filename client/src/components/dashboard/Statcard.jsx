@@ -1,13 +1,22 @@
+import { useNavigate } from "react-router-dom";
+
 export default function StatCard({
   title,
   value,
   icon,
   color = "text-violet-500",
+  link,
 }) {
   const Icon = icon;
+  const navigate = useNavigate();
 
   return (
-    <div className="group rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-violet-500 hover:shadow-xl hover:shadow-violet-500/10">
+    <div
+      onClick={() => link && navigate(link)}
+      className={`group rounded-2xl border border-slate-800 bg-slate-900 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-violet-500 hover:shadow-xl hover:shadow-violet-500/10 ${
+        link ? "cursor-pointer" : ""
+      }`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-slate-400">

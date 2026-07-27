@@ -11,7 +11,9 @@ import Roadmap from "../pages/Roadmap";
 import CodingArena from "../pages/CodingArena";
 import Calendar from "../pages/Calendar";
 import Settings from "../pages/Settings";
-
+import PlanningZone from "../pages/PlanningZone";
+import KnowledgeHub from "../pages/KnowledgeHub";
+import KnowledgeDetails from "../pages/KnowledgeDetails";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -45,13 +47,8 @@ export default function AppRoutes() {
           }
           
         />
-        <Route
-          path="/roadmap"
-          element={
-            <ProtectedRoute>
-              <Roadmap />
-            </ProtectedRoute>
-          }/>
+        <Route  path="/roadmap/:id"  element={<Roadmap />}/>
+          
           <Route 
           path="/coding-arena" 
           element={
@@ -60,6 +57,25 @@ export default function AppRoutes() {
           />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/planning-zone" element={<PlanningZone />} />
+          <Route
+              path="/knowledge"
+              element={
+                <ProtectedRoute>
+                  <KnowledgeHub />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/knowledge/:id"
+              element={
+                <ProtectedRoute>
+                  <KnowledgeDetails />
+                </ProtectedRoute>
+              }
+            />
+          
 
     </Routes>
   );

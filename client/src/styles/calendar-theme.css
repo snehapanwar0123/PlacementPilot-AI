@@ -1,0 +1,124 @@
+/* ===== Calendar Container ===== */
+
+.rbc-calendar {
+  background: transparent;
+  color: #f8fafc;
+  font-family: Inter, sans-serif;
+}
+
+/* ===== Toolbar ===== */
+
+.rbc-toolbar {
+  margin-bottom: 25px;
+}
+
+.rbc-toolbar button {
+  background: rgba(255,255,255,.08) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 14px !important;
+  padding: 10px 18px !important;
+  transition: .25s;
+  font-weight: 600;
+}
+
+.rbc-toolbar button:hover {
+  background: #6366f1 !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+.rbc-toolbar button.rbc-active {
+  background: linear-gradient(135deg,#6366f1,#7c3aed) !important;
+  color: white !important;
+}
+
+.rbc-toolbar-label {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* ===== Headers ===== */
+
+.rbc-header {
+  border: none !important;
+  color: #cbd5e1;
+  padding: 16px 0;
+  font-weight: 700;
+  background: transparent;
+}
+
+/* ================= GRID ================= */
+
+.rbc-month-view {
+  border: none !important;
+  background: transparent;
+}
+
+.rbc-month-row {
+  border: none !important;
+}
+
+.rbc-row-content {
+  z-index: 4;
+}
+
+.rbc-day-bg {
+  margin: 6px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  background: rgba(255,255,255,.03);
+  transition: all .25s ease;
+}
+
+.rbc-day-bg:hover {
+  background: rgba(99,102,241,.12);
+  border-color: rgba(129,140,248,.5) !important;
+  transform: translateY(-2px);
+}
+
+.rbc-date-cell {
+  padding: 10px 12px;
+  text-align: right;
+}
+
+.rbc-date-cell a {
+  color: #f8fafc !important;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ================= TODAY ================= */
+
+.rbc-today {
+  background: rgba(99,102,241,.12) !important;
+}
+
+.rbc-now {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#6366f1,#7c3aed);
+  color: white !important;
+  font-weight: bold;
+}
+/* ===== Events ===== */
+
+.rbc-event {
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 6px 12px !important;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(0,0,0,.3);
+  transition: all .2s;
+}
+
+.rbc-event:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,.35);
+}

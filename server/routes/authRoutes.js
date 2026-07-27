@@ -1,12 +1,14 @@
 import express from "express";
 
-import {
-  registerUser,
-  loginUser,
-  getCurrentUser,
-} from "../controllers/authController.js";
+
 
 import { protect } from "../middleware/authMiddleware.js";
+import {
+    registerUser,
+    loginUser,
+    getCurrentUser,
+    changePassword,
+} from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -16,5 +18,10 @@ router.post("/login", loginUser);
 
 // Protected Route
 router.get("/me", protect, getCurrentUser);
+router.put(
+    "/change-password",
+    protect,
+    changePassword
+);
 
 export default router;

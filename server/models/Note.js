@@ -28,11 +28,20 @@ const noteSchema = new mongoose.Schema(
       required: true,
     },
 
-    roadmap: {
+    roadmaps: [
+  {
+    roadmapId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Roadmap",
       required: true,
     },
+
+    role: {
+      type: String,
+      required: true,
+    },
+  },
+],
 
     topic: {
       type: String,

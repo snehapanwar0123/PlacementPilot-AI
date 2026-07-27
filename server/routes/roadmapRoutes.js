@@ -2,6 +2,7 @@ import express from "express";
 import {
   createRoadmap,
   getRoadmap,
+  getRoadmapById,
 } from "../controllers/roadmapController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -13,5 +14,7 @@ router
   .route("/")
   .post(createRoadmap)
   .get(getRoadmap);
+
+router.get("/:id", getRoadmapById);
 
 export default router;

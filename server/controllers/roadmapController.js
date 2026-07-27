@@ -43,16 +43,34 @@ export const createRoadmap = async (req, res) => {
   }
 };
 
-// Get Latest Roadmap
+// Get all roadmaps of logged-in user
 export const getRoadmap = async (req, res) => {
   try {
-    const roadmap = await Roadmap.findOne({
+    const roadmaps = await Roadmap.find({
       user: req.user._id,
     }).sort({ createdAt: -1 });
 
+    res.status(200).json(roadmaps);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch roadmaps.",
+    });
+  }
+};
+
+// Get a single roadmap by ID
+export const getRoadmapById = async (req, res) => {
+  try {
+    const roadmap = await Roadmap.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
     if (!roadmap) {
       return res.status(404).json({
-        message: "No roadmap found.",
+        message: "Roadmap not found.",
       });
     }
 

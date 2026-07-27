@@ -16,12 +16,19 @@ export const getSmartNotes = async (req, res) => {
     // Check if note already exists
     const existingNote = await Note.findOne({
       user: req.user._id,
-      roadmap: roadmapId,
       topic,
     });
 
     if (existingNote) {
-      return res.status(200).json(existingNote);
+      const alreadyExists = existingNote.roadmaps.some(
+        (r) => r.roadmapId.toString() === roadmapId
+      );
+
+      if (!alreadyExists) {
+        // We'll fetch the roadmap below, so don't return yet.
+      } else {
+        return res.status(200).json(existingNote);
+      }
     }
 
     // Fetch roadmap to get role and level
@@ -35,6 +42,16 @@ export const getSmartNotes = async (req, res) => {
         message: "Roadmap not found.",
       });
     }
+    if (existingNote) {
+      existingNote.roadmaps.push({
+        roadmapId,
+        role: roadmap.role,
+      });
+
+      await existingNote.save();
+
+      return res.status(200).json(existingNote);
+    }
 
     // Generate AI notes
     const aiNote = await generateSmartNotes(
@@ -46,7 +63,12 @@ export const getSmartNotes = async (req, res) => {
     // Save generated note
     const note = await Note.create({
       user: req.user._id,
-      roadmap: roadmapId,
+      roadmaps: [
+      {
+        roadmapId,
+        role: roadmap.role,
+      },
+],
       topic,
       explanation: aiNote.explanation,
       keyConcepts: aiNote.keyConcepts,
@@ -67,12 +89,17 @@ export const getSmartNotes = async (req, res) => {
   }
 };
 
-// Get All Saved Notes
+// Get All Saved Notes (Knowledge Hub)
 export const getAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find({
-      user: req.user._id,
-    }).sort({ createdAt: -1 });
+    const notes = await Note.find(
+      { user: req.user._id },
+      {
+        topic: 1,
+        roadmaps: 1,
+        createdAt: 1,
+      }
+    ).sort({ createdAt: -1 });
 
     res.status(200).json(notes);
   } catch (error) {
@@ -83,7 +110,6 @@ export const getAllNotes = async (req, res) => {
     });
   }
 };
-
 // Get Single Note
 export const getNoteById = async (req, res) => {
   try {

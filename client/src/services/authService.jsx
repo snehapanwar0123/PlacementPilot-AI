@@ -13,3 +13,10 @@ export const register = async (userData) => {
   const { data } = await API.post("/register", userData);
   return data;
 };
+const logout = () => {
+  localStorage.removeItem("user");
+};
+
+export default {
+  logout,
+};

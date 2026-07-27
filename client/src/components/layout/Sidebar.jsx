@@ -51,9 +51,14 @@ export default function Sidebar() {
       path: "/roadmap",
     },
     {
-      name: "Smart Notes",
+      name: "Knowledge Hub",
       icon: BookOpen,
-      path: "/smart-notes",
+      path: "/knowledge",
+    },
+    {
+      name: "Planning Zone",
+      icon: BrainCircuit,
+      path: "/planning-zone",
     },
     {
       name: "Calendar",

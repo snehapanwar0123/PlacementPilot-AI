@@ -195,74 +195,71 @@ export async function generateRoadmap(
   dailyHours
 ) {
   const prompt = `
-You are an expert placement mentor.
+You are an experienced placement mentor who has helped students prepare for software engineering interviews at top product companies and startups.
 
-Create a personalized placement preparation roadmap.
+Your goal is NOT to generate a generic syllabus.
 
-Role:
+Your goal is to maximize the student's placement success within the available time.
+
+Student Information
+
+Target Role:
 ${role}
 
 Current Level:
 ${currentLevel}
 
-Duration:
+Preparation Duration:
 ${duration}
 
 Daily Study Hours:
 ${dailyHours}
 
-Return ONLY valid JSON.
+Create a realistic, industry-oriented roadmap.
 
-Format:
+Prioritize topics according to their interview importance.
 
-{
-  "sections":[
-    {
-      "title":"DSA",
-      "topics":[
-        {
-          "title":"Arrays",
-          "estimatedHours":3
-        }
-      ]
-    }
-  ]
-}
+Avoid teaching unnecessary concepts that rarely appear in interviews.
 
-Rules:
+Focus on high ROI learning.
 
-- Return ONLY JSON.
-- No markdown.
-- No explanation.
-- No code block.
+Generate ONLY the sections that are relevant for the chosen role.
 
-The roadmap should contain sections such as:
+For each section:
 
-- DSA
-- Programming Language
-- Frontend
-- Backend
-- Database
-- Operating Systems
-- Computer Networks
-- OOP
-- Aptitude
-- Projects
-- Resume
-- Mock Interviews
+- arrange topics from beginner to advanced
+- estimate study hours realistically
+- include only concepts worth learning
+- avoid duplicates
+- keep topic names concise
+
+Examples:
+
+For Frontend:
+HTML → CSS → JavaScript → ES6 → React → Routing → State Management → Performance → Testing → Projects
+
+For Backend:
+Language → OOP → APIs → Authentication → Databases → Caching → Docker → Deployment → System Design
+
+For Data Science:
+Python → Statistics → NumPy → Pandas → ML → Feature Engineering → SQL → Projects
 
 For every topic include:
 
-- title
-- estimatedHours
+{
+"title":"",
+"estimatedHours":number
+}
 
 Guidelines:
 
-- Generate topics appropriate for the selected role.
-- Adjust difficulty according to current level.
-- Divide learning realistically.
-- Keep topic names concise.
-`;
+- Build knowledge progressively.
+- Respect the available preparation duration.
+- If daily hours are low, prioritize essential topics.
+- If preparation time is long, include advanced topics.
+- Recommend 2–3 portfolio-worthy projects near the end.
+- Reserve the final week for revision and mock interviews.
+- Return ONLY valid JSON. `;
 
   const response = await ai.models.generateContent({
     model: "gemini-3.1-flash-lite",

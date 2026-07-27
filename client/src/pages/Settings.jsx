@@ -1,7 +1,23 @@
 import { useEffect, useState } from "react";
 import settingsService from "../services/settingsService";
+import { useTheme } from "../context/ThemeContext";
+import SettingsSidebar from "../components/settings/SettingsSidebar";
+import SettingsHeader from "../components/settings/SettingsHeader";
+import SettingsCard from "../components/settings/SettingsCard";
+import {
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  Monitor,
+  Smartphone,
+} from "lucide-react";
+import authService from "../services/authService";
+import { useNavigate } from "react-router-dom";
+
 
 const Settings = () => {
+  const navigate = useNavigate();
+          
   const [settings, setSettings] = useState({
     college: "",
     branch: "",
@@ -17,10 +33,13 @@ const Settings = () => {
       interview: true,
       oa: true,
       weeklySummary: true,
+      
+
     },
   });
 
   const [skillInput, setSkillInput] = useState("");
+  
 
   useEffect(() => {
     loadSettings();
@@ -72,144 +91,469 @@ const Settings = () => {
       alert("Failed to save settings.");
     }
   };
+  const [active, setActive] = useState("placement");
+  const { theme, setTheme } = useTheme();
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [passwords, setPasswords] = useState({
+  current: "",
+  new: "",
+  confirm: "",
+});
 
+const [showPassword, setShowPassword] = useState({
+  current: false,
+  new: false,
+  confirm: false,
+});
+const getPasswordStrength = () => {
+  const pwd = passwords.new;
+
+  let score = 0;
+
+  if (pwd.length >= 8) score++;
+  if (/[A-Z]/.test(pwd)) score++;
+  if (/[a-z]/.test(pwd)) score++;
+  if (/[0-9]/.test(pwd)) score++;
+  if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+  if (score <= 2)
+    return {
+      text: "Weak",
+      color: "bg-red-500",
+    };
+
+  if (score <= 4)
+    return {
+      text: "Medium",
+      color: "bg-yellow-500",
+    };
+
+  return {
+    text: "Strong",
+    color: "bg-green-500",
+  };
+};
+const handlePasswordChange = async () => {
+
+    if (
+        passwords.new !== passwords.confirm
+    ) {
+        return alert("Passwords do not match");
+    }
+
+    if (passwords.new.length < 6) {
+        return alert(
+            "Password must be at least 6 characters."
+        );
+    }
+
+    try {
+
+        const res =
+            await settingsService.changePassword({
+
+                currentPassword:
+                    passwords.current,
+
+                newPassword:
+                    passwords.new,
+
+            });
+
+        alert(res.message);
+
+        setPasswords({
+            current: "",
+            new: "",
+            confirm: "",
+        });
+
+    } catch (err) {
+
+        alert(
+            err.response?.data?.message ||
+            "Unable to change password"
+        );
+
+    }
+    
+};
+const handleLogout = () => {
+  authService.logout();
+  navigate("/", { replace: true });
+};
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <h1 className="text-3xl font-bold">
-        Settings
-      </h1>
+  <div className="min-h-screen bg-gradient-to-br from-[#EEF4FF] via-[#F8F5FF] to-[#DCE9FF] p-8">
 
-      {/* Placement Preferences */}
+    <SettingsHeader />
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">
-          Placement Preferences
-        </h2>
+    <div className="flex gap-8 items-start">
 
-        <label className="block mb-2 font-medium">
-          Target Role
+      <SettingsSidebar
+        active={active}
+        setActive={setActive}
+      />
+
+      <div className="flex-1">
+
+        {/* Placement */}
+
+        {active === "placement" && (
+          <SettingsCard title="Placement Preferences">
+
+            <label className="block mb-2 font-medium">
+              Target Role
+            </label>
+
+            <select
+              name="targetRole"
+              value={settings.targetRole}
+              onChange={handleChange}
+              className="w-full rounded-xl border border-slate-200 p-3"
+            >
+              <option>SDE</option>
+              <option>Full Stack</option>
+              <option>Product Analyst</option>
+              <option>Data Analyst</option>
+              <option>ML Engineer</option>
+            </select>
+
+          </SettingsCard>
+        )}
+
+        {/* AI */}
+
+        {active === "ai" && (
+          <SettingsCard title="AI Preferences">
+
+            <div className="grid grid-cols-2 gap-6">
+
+              <div>
+                <label className="font-medium">
+                  Experience Level
+                </label>
+
+                <select
+                  name="experienceLevel"
+                  value={settings.experienceLevel}
+                  onChange={handleChange}
+                  className="w-full mt-2 rounded-xl border p-3"
+                >
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Advanced</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="font-medium">
+                  Daily Study Hours
+                </label>
+
+                <input
+                  type="number"
+                  name="dailyStudyHours"
+                  value={settings.dailyStudyHours}
+                  onChange={handleChange}
+                  className="w-full mt-2 rounded-xl border p-3"
+                />
+              </div>
+
+            </div>
+            
+
+          </SettingsCard>
+        )}
+        {/* Appearance */}
+
+{active === "appearance" && (
+  <SettingsCard title="Appearance">
+
+    <p className="text-slate-600 mb-6">
+      Choose how PlacementPilot looks.
+    </p>
+
+    <div className="space-y-4">
+
+      {["light", "dark", "system"].map((mode) => (
+        <button
+          key={mode}
+          onClick={() => setTheme(mode)}
+          className={`w-full flex justify-between items-center rounded-xl border p-4 transition
+          ${
+            theme === mode
+              ? "border-indigo-600 bg-indigo-50"
+              : "border-slate-200 hover:bg-slate-50"
+          }`}
+        >
+          <span className="capitalize font-medium">
+            {mode}
+          </span>
+
+          {theme === mode && (
+            <span className="text-indigo-600 font-semibold">
+              ✓
+            </span>
+          )}
+        </button>
+      ))}
+
+    </div>
+
+  </SettingsCard>
+)}
+{active === "security" && (
+  <SettingsCard title="Security">
+    <div className="space-y-6">
+
+      {/* Current Password */}
+
+      <div>
+        <label className="font-medium block mb-2">
+          Current Password
         </label>
 
-        <select
-          name="targetRole"
-          value={settings.targetRole}
-          onChange={handleChange}
-          className="border rounded-lg p-2 w-full"
-        >
-          <option>SDE</option>
-          <option>Full Stack</option>
-          <option>Product Analyst</option>
-          <option>Data Analyst</option>
-          <option>ML Engineer</option>
-        </select>
-      </div>
-
-      {/* Skills */}
-
-      <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">
-          Skills
-        </h2>
-
-        <div className="flex gap-2">
+        <div className="relative">
           <input
-            value={skillInput}
-            onChange={(e) => setSkillInput(e.target.value)}
-            placeholder="Add Skill"
-            className="border rounded-lg p-2 flex-1"
+            type={showPassword.current ? "text" : "password"}
+            value={passwords.current}
+            onChange={(e) =>
+              setPasswords({
+                ...passwords,
+                current: e.target.value,
+              })
+            }
+            className="w-full rounded-xl border p-3 pr-12"
           />
 
           <button
-            onClick={addSkill}
-            className="bg-blue-600 text-white px-4 rounded-lg"
+            type="button"
+            onClick={() =>
+              setShowPassword({
+                ...showPassword,
+                current: !showPassword.current,
+              })
+            }
+            className="absolute right-4 top-4"
           >
-            Add
+            {showPassword.current ? (
+              <EyeOff size={18} />
+            ) : (
+              <Eye size={18} />
+            )}
           </button>
         </div>
+      </div>
 
-        <div className="flex flex-wrap gap-2 mt-4">
-          {settings.skills.map((skill) => (
-            <span
-              key={skill}
-              className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full"
-            >
-              {skill}
+      {/* New Password */}
+
+      <div>
+        <label className="font-medium block mb-2">
+          New Password
+        </label>
+
+        <div className="relative">
+          <input
+            type={showPassword.new ? "text" : "password"}
+            value={passwords.new}
+            onChange={(e) =>
+              setPasswords({
+                ...passwords,
+                new: e.target.value,
+              })
+            }
+            className="w-full rounded-xl border p-3 pr-12"
+          />
+
+          <button
+            type="button"
+            onClick={() =>
+              setShowPassword({
+                ...showPassword,
+                new: !showPassword.new,
+              })
+            }
+            className="absolute right-4 top-4"
+          >
+            {showPassword.new ? (
+              <EyeOff size={18} />
+            ) : (
+              <Eye size={18} />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Confirm Password */}
+
+      <div>
+        <label className="font-medium block mb-2">
+          Confirm Password
+        </label>
+
+        <input
+          type={showPassword.confirm ? "text" : "password"}
+          value={passwords.confirm}
+          onChange={(e) =>
+            setPasswords({
+              ...passwords,
+              confirm: e.target.value,
+            })
+          }
+          className="w-full rounded-xl border p-3"
+        />
+      </div>
+
+      {/* Password Strength */}
+
+      <div>
+        <div className="flex justify-between text-sm mb-2">
+          <span>Password Strength</span>
+          <span>{getPasswordStrength().text}</span>
+        </div>
+
+        <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
+          <div
+            className={`h-full ${getPasswordStrength().color}`}
+            style={{
+              width:
+                getPasswordStrength().text === "Weak"
+                  ? "35%"
+                  : getPasswordStrength().text === "Medium"
+                  ? "70%"
+                  : "100%",
+            }}
+          />
+        </div>
+      </div>
+
+     <button
+        disabled={changingPassword}
+        onClick={handlePasswordChange}
+        className="px-6 py-3 rounded-xl bg-indigo-600 text-white disabled:opacity-50"
+    >
+        {changingPassword
+            ? "Changing..."
+            : "Change Password"}
+    </button>
+
+      <hr />
+
+      <div>
+        <h3 className="font-semibold text-lg mb-4">
+          Active Sessions
+        </h3>
+
+        <div className="space-y-4">
+
+          <div className="flex justify-between items-center rounded-xl border p-4">
+            <div className="flex gap-3 items-center">
+              <Monitor />
+              <div>
+                <p className="font-medium">
+                  Chrome • Windows
+                </p>
+                <p className="text-sm text-slate-500">
+                  Current Device
+                </p>
+              </div>
+            </div>
+
+            <ShieldCheck className="text-green-500" />
+          </div>
+
+          <div className="flex justify-between items-center rounded-xl border p-4">
+            <div className="flex gap-3 items-center">
+              <Smartphone />
+              <div>
+                <p className="font-medium">
+                  Safari • iPhone
+                </p>
+                <p className="text-sm text-slate-500">
+                  Last active 2 days ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+            <button
+      onClick={handleLogout}
+      className="mt-6 px-6 py-3 rounded-xl bg-red-600 text-white hover:bg-red-700 transition"
+    >
+      Logout
+    </button>
+      </div>
+
+    </div>
+  </SettingsCard>
+)}
+
+        {/* General */}
+
+        {active === "general" && (
+          <SettingsCard title="Skills">
+
+            <div className="flex gap-3">
+
+              <input
+                value={skillInput}
+                onChange={(e) => setSkillInput(e.target.value)}
+                placeholder="React, Laravel, SQL..."
+                className="flex-1 rounded-xl border p-3"
+              />
 
               <button
-                className="ml-2"
-                onClick={() => removeSkill(skill)}
+                onClick={addSkill}
+                className="px-6 rounded-xl bg-indigo-600 text-white"
               >
-                ×
+                Add
               </button>
-            </span>
-          ))}
-        </div>
-      </div>
 
-      {/* AI Preferences */}
+            </div>
 
-      <div className="bg-white rounded-xl shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">
-          AI Preferences
-        </h2>
+            <div className="flex flex-wrap gap-3 mt-6">
 
-        <div className="grid grid-cols-2 gap-4">
+              {settings.skills.map((skill) => (
+                <div
+                  key={skill}
+                  className="px-4 py-2 rounded-full bg-indigo-100 text-indigo-700"
+                >
+                  {skill}
 
-          <div>
-            <label>Experience Level</label>
+                  <button
+                    onClick={() => removeSkill(skill)}
+                    className="ml-2"
+                  >
+                    ×
+                  </button>
 
-            <select
-              name="experienceLevel"
-              value={settings.experienceLevel}
-              onChange={handleChange}
-              className="border rounded-lg p-2 w-full"
-            >
-              <option>Beginner</option>
-              <option>Intermediate</option>
-              <option>Advanced</option>
-            </select>
-          </div>
+                </div>
+              ))}
 
-          <div>
-            <label>Daily Study Hours</label>
+            </div>
 
-            <input
-              type="number"
-              min="1"
-              max="12"
-              name="dailyStudyHours"
-              value={settings.dailyStudyHours}
-              onChange={handleChange}
-              className="border rounded-lg p-2 w-full"
-            />
-          </div>
+          </SettingsCard>
+        )}
 
-          <div>
-            <label>Preferred Language</label>
+        <div className="mt-8 flex justify-end">
 
-            <select
-              name="preferredLanguage"
-              value={settings.preferredLanguage}
-              onChange={handleChange}
-              className="border rounded-lg p-2 w-full"
-            >
-              <option>C++</option>
-              <option>Java</option>
-              <option>Python</option>
-            </select>
-          </div>
+          <button
+            onClick={saveSettings}
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-lg hover:scale-105 transition"
+          >
+            Save Changes
+          </button>
 
         </div>
+
       </div>
 
-      <button
-        onClick={saveSettings}
-        className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-      >
-        Save Settings
-      </button>
     </div>
-  );
+
+  </div>
+);
 };
 
 export default Settings;

@@ -1,6 +1,6 @@
 import ProgressBar from "./ProgressBar";
 
-export default function ActivityCard() {
+export default function ActivityCard({ stats }) {
   return (
     <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
       <h2 className="mb-6 text-xl font-bold">
@@ -23,8 +23,8 @@ export default function ActivityCard() {
           </p>
 
           <ProgressBar
-            value={82}
-            color="bg-green-500"
+              value={stats.resumeScore}
+              color="bg-green-500"
           />
         </div>
 
@@ -34,9 +34,9 @@ export default function ActivityCard() {
           </p>
 
           <ProgressBar
-            value={35}
+            value={stats.applicationProgress}
             color="bg-yellow-500"
-          />
+        />
         </div>
 
       </div>

@@ -31,7 +31,18 @@ const updateSettings = async (settingsData) => {
   return response.data;
 };
 
+const changePassword = async (passwordData) => {
+  const response = await axios.put(
+    "http://localhost:5000/api/auth/change-password",
+    passwordData,
+    getAuthHeader()
+  );
+
+  return response.data;
+};
+
 export default {
   getSettings,
   updateSettings,
+  changePassword,
 };
