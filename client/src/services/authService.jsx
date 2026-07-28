@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: `${import.meta.env.VITE_API_URL}/api/auth`,
 });
 
 export const login = async (userData) => {
@@ -13,7 +13,8 @@ export const register = async (userData) => {
   const { data } = await API.post("/register", userData);
   return data;
 };
-const logout = () => {
+
+export const logout = () => {
   localStorage.removeItem("user");
 };
 

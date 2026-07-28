@@ -93,7 +93,8 @@ export default function Login() {
   <button
     type="button"
     onClick={() => {
-      window.location.href = "http://localhost:5000/api/auth/google";
+      const API_URL = import.meta.env.VITE_API_URL;
+      window.location.href = `${API_URL}/api/auth/google`;
     }}
     className="w-full flex items-center justify-center gap-3 border border-gray-300 rounded-lg py-3 hover:bg-gray-50 transition"
   >
