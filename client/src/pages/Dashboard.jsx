@@ -130,11 +130,11 @@ export default function Dashboard() {
               </p>
 
               <p>
-                <strong>Skills:</strong>{" "}
-                {settings.skills.length
-                  ? settings.skills.join(", ")
-                  : "None"}
-              </p>
+            <strong>Skills:</strong>{" "}
+            {(settings.skills || []).length
+              ? settings.skills.join(", ")
+              : "None"}
+          </p>
             </div>
           ) : (
             <p className="text-slate-400">Loading...</p>
