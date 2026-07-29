@@ -27,6 +27,7 @@ export default function ResumeUpload() {
   const fetchResumes = async () => {
     try {
       const data = await getMyResumes();
+      console.log("Resume API Response:", data);
       setResumes(data);
     } catch (err) {
       console.error(err);
