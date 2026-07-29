@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "${import.meta.env.VITE_API_URL}/api/calendar";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/calendar`;
 
 const getAuthHeader = () => {
   const user = JSON.parse(localStorage.getItem("user"));

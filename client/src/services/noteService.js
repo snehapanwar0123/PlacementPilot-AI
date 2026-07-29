@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "${import.meta.env.VITE_API_URL}/api/notes";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/notes`;
 
 const getAuthHeader = () => {
   const user = JSON.parse(localStorage.getItem("user"));

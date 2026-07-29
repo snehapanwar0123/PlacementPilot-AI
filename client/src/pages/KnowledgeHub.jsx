@@ -24,7 +24,7 @@ const KnowledgeHub = () => {
       const token = JSON.parse(localStorage.getItem("user")).token;
 
       const { data } = await axios.get(
-        "${import.meta.env.VITE_API_URL}/api/notes",
+          `${import.meta.env.VITE_API_URL}/api/notes`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

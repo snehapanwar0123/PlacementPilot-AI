@@ -24,7 +24,7 @@ export default function SmartNotesDrawer({
         ).token;
 
         const response = await axios.post(
-          "${import.meta.env.VITE_API_URL}/api/notes",
+          `${import.meta.env.VITE_API_URL}/api/notes`,
           {
             roadmapId,
             topic,

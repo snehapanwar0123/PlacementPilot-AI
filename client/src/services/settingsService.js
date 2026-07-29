@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "${import.meta.env.VITE_API_URL}/api/settings";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/settings`;
 
 const getAuthHeader = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -33,7 +33,7 @@ const updateSettings = async (settingsData) => {
 
 const changePassword = async (passwordData) => {
   const response = await axios.put(
-    "${import.meta.env.VITE_API_URL}/api/auth/change-password",
+    `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
     passwordData,
     getAuthHeader()
   );
