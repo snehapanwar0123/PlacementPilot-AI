@@ -32,7 +32,7 @@ const navigate = useNavigate();
     const token = JSON.parse(localStorage.getItem("user")).token;
 
     const response = await axios.post(
-      "http://localhost:5000/api/roadmaps",
+      "${import.meta.env.VITE_API_URL}/api/roadmaps",
       formData,
       {
         headers: {
@@ -68,7 +68,7 @@ const navigate = useNavigate();
     const token = JSON.parse(localStorage.getItem("user")).token;
 
     const response = await axios.get(
-      "http://localhost:5000/api/roadmaps",
+      "${import.meta.env.VITE_API_URL}/api/roadmaps",
       {
         headers: {
           Authorization: `Bearer ${token}`,

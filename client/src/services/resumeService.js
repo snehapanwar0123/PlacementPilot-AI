@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/resume";
+const API_URL = "${import.meta.env.VITE_API_URL}/api/resume";
 
 export const analyzeResume = async (file) => {
   const formData = new FormData();
@@ -37,7 +37,7 @@ export const improveResume = async (resumeText) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const response = await axios.post(
-    "http://localhost:5000/api/improve",
+    "${import.meta.env.VITE_API_URL}/api/improve",
     { resumeText },
     {
       headers: {

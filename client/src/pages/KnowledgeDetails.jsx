@@ -22,7 +22,7 @@ const [score, setScore] = useState(0);
       const token = JSON.parse(localStorage.getItem("user")).token;
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/notes/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

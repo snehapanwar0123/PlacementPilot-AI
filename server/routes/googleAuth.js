@@ -3,6 +3,7 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
+const CLIENT_URL = process.env.CLIENT_URL;
 
 // Redirect user to Google
 router.get(
@@ -17,7 +18,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "http://localhost:5173/",
+    failureRedirect: `${CLIENT_URL}/`,
   }),
   (req, res) => {
     const token = jwt.sign(
@@ -30,9 +31,7 @@ router.get(
       }
     );
 
-    res.redirect(
-      `http://localhost:5173/auth/google/success?token=${token}`
-    );
+    res.redirect(`${CLIENT_URL}/auth/google/success?token=${token}`);
   }
 );
 

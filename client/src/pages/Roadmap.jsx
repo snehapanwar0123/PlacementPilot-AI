@@ -18,7 +18,7 @@ export default function Roadmap() {
       const token = JSON.parse(localStorage.getItem("user")).token;
 
       const response = await axios.get(
-        `http://localhost:5000/api/roadmaps/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/roadmaps/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
